@@ -16,8 +16,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User updateNameById(Long userId) {
-        return userRepository.updateById(userId);
+    public User updateNameById(Long userId, String newName) {
+        var user = getUserById(userId);
+        user.setName(newName);
+        return userRepository.save(user);
     }
 
     public User getUserById(Long id) {
