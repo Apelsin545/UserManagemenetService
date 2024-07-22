@@ -2,7 +2,10 @@ package ru.eventplanner.usermanagementservice.user;
 
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/user")
@@ -16,16 +19,18 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        user.setCreationDate(LocalDate.now() );
         return userService.save(user);
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId) {
-        return userService.getUserById(userId);
+    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+        var user = userService.getUserById(userId);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping
-    public User updateUser(@PathParam("user_id") Long userId, @PathParam("new_name") String newName) {
+    public User updateUser(@PathParam("userId") Long userId, @PathParam("newName") String newName) {
         return userService.updateNameById(userId, newName);
     }
 }
